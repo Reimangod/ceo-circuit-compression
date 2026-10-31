@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Please cite this version of the code and data, and the original CEO paper."
+title: "CEO circuit compression: code and full-orbital research data"
+type: software
+version: 1.0.0
+date-released: 2026-10-31
+authors:
+  - family-names: Watanabe
+    given-names: Rei
+url: "https://github.com/Reimangod/ceo-circuit-compression"
+license: Apache-2.0
+abstract: >-
+  Latest bounded source-only CEO compression policy and 41 indexed full-orbital
+  molecular conditions. Current-policy executions cover 22 conditions and 66
+  starting circuits. Historical records retain distinct methods and budgets.
+  Data and documentation use CC-BY-4.0. This private release has no DOI yet.

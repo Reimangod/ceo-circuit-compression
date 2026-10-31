@@ -1,0 +1,10 @@
+{
+  "file": "ceo-full-orbital-data-v1.0.0.tar.gz",
+  "bytes": 181959558,
+  "sha256": "44ed2b3df76cc46a7e3694ca963154adebdbcc2170afb795a16d3f569d53256f",
+  "members": 1270,
+  "format": "tar.gz",
+  "scope": "data",
+  "visibility": "PRIVATE",
+  "doi": null
+}

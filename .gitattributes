@@ -1,0 +1,6 @@
+# Preserve byte-identical scientific snapshots and upstream CRLF source files.
+policy/frozen/** -text -whitespace
+third_party/** -text -whitespace
+data/tables/*.csv -text -whitespace
+*.docx binary
+*.png binary

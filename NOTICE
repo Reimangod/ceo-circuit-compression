@@ -1,0 +1,12 @@
+CEO circuit compression research archive
+Original archive assembly and latest compression policy: Rei Watanabe.
+
+This repository includes source from mafaldaramoa/ceo-adapt-vqe,
+commit a3f89d03e6a03c89767d3cf8ee7657a57653dda0, under Apache License 2.0.
+Original source is kept in third_party/ceo-adapt-vqe, with its original LICENSE
+and README. The frozen compressor and the upstream baseline are different layers.
+No endorsement or coauthorship by the upstream authors is implied.
+
+Portable archive/reconstruction/execution entry points are new additions.
+Frozen policy files retain their recorded byte hashes. Historical compression
+outputs are distributed as data, not as executable historical algorithms.
