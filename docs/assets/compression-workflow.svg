@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="252" viewBox="0 0 1240 252" role="img" aria-labelledby="title description">
+  <title id="title">Source-only CEO circuit compression</title>
+  <desc id="description">Saved uncompressed CEO checkpoints supply candidate subsequences and constraints. Initial screening and optional BFGS refinement share a bounded queue. Independent checks validate energy and resources before outputs are saved. Remaining budget returns control to the queue.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"/>
+    </marker>
+  </defs>
+  <rect width="1240" height="252" fill="#FFFFFF"/>
+  <g fill="none" stroke="#111111" stroke-width="1.7" marker-end="url(#arrow)">
+    <path d="M 236 100 H 260"/>
+    <path d="M 480 100 H 504"/>
+    <path d="M 724 100 H 748"/>
+    <path d="M 968 100 H 992"/>
+    <path d="M 858 154 V 206 H 614 V 154"/>
+  </g>
+  <g stroke="#111111" stroke-width="1.4">
+    <rect x="16" y="46" width="220" height="108" rx="10" fill="#F1F6FC"/>
+    <rect x="260" y="46" width="220" height="108" rx="10" fill="#FFFBEA"/>
+    <rect x="504" y="46" width="220" height="108" rx="10" fill="#FFFBEA"/>
+    <rect x="748" y="46" width="220" height="108" rx="10" fill="#FFF0EC"/>
+    <rect x="992" y="46" width="232" height="108" rx="10" fill="#F2F9F2"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#111111" text-anchor="middle">
+    <g font-size="18" font-weight="700">
+      <text x="126" y="77">Saved CEO inputs</text>
+      <text x="370" y="77">Build candidates</text>
+      <text x="614" y="77">Screen and refine</text>
+      <text x="858" y="77">Validate the pair</text>
+      <text x="1108" y="77">Save verified outputs</text>
+    </g>
+    <g font-size="15">
+      <text x="126" y="108">Uncompressed checkpoints</text>
+      <text x="126" y="132">Problem and coefficients</text>
+      <text x="370" y="108">Ordered subsequences</text>
+      <text x="370" y="132">Registered constraints</text>
+      <text x="614" y="108">Initial energy evaluation</text>
+      <text x="614" y="132">Bounded BFGS if needed</text>
+      <text x="858" y="108">Energy and logical resources</text>
+      <text x="858" y="132">Independent state checks</text>
+      <text x="1108" y="108">Circuit and coefficients</text>
+      <text x="1108" y="132">Comparator and work ledger</text>
+    </g>
+    <text x="736" y="234" font-size="15">Continue the candidate queue while budget remains</text>
+    <text x="620" y="25" font-size="14" fill="#444444">The same reference-input simplification is applied to comparator and candidate circuits.</text>
+  </g>
+</svg>

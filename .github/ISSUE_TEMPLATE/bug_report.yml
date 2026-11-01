@@ -1,0 +1,40 @@
+name: Reproducibility or documentation issue
+description: Report a reproducible tooling failure or unclear explanation.
+title: "[Issue] "
+body:
+  - type: markdown
+    attributes:
+      value: "Use sanitized output. Do not include credentials or private research payloads."
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Documentation
+        - Data retrieval or verification
+        - Saved-result reconstruction
+        - Synthetic numerical tests
+        - Explicit policy launcher
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Commit and environment
+      description: Include the commit, operating system, and Python version.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Command and observed result
+      description: Include a minimal command and sanitized error output.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true

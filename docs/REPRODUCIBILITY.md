@@ -1,6 +1,6 @@
 # Reproducibility and execution
 
-## Levels
+## Reproduction levels
 
 1. **Archive integrity:** download the private data asset, verify its SHA-256 and
    each object, inspect scope and immutable code hashes. Python standard library only.
@@ -33,6 +33,24 @@ The original template registry is embedded in each frozen task, including exact
 data digest. Reconstructing it is not required to run the recorded tasks. The
 registry construction source and pinned upstream source are retained for inspection;
 its legacy helper path is an original provenance detail, not an active worker dependency.
+
+## Explicit policy execution
+
+After retrieving and verifying the fixed data, install the numerical dependencies
+from the committed lockfile. New execution is qualified for macOS only.
+
+```bash
+uv sync --frozen --extra policy
+uv run --frozen python tools/check_isolation.py
+uv run --frozen python tools/run_policy.py \
+  --task-id lih-1.20A-all-orbitals-root006 \
+  --output execution/new-attempt
+```
+
+The isolation probe only imports the worker and tests access denial. The task
+runner is the separate command that starts molecular work. It retains the task's
+registered limits, writes new outputs, and preserves failed or time-censored
+attempts without retries. The run does not read previously compressed solutions.
 
 ## Figures and Word
 
