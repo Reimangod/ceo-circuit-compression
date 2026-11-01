@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Replace the maintained repository guides with English documentation and a goal-based README.
+- Add editable SVG workflow and data-derived comparison graphics, plus all 22 current result pairs.
+- Check documentation links, English guide text, generated assets, and frozen implementation hashes in CI.
+- Use locked dependencies, pinned Actions, Python 3.11/3.12 synthetic tests, macOS isolation checks, and trusted-branch saved-data audits.
+- Preserve the scientific release, original report, data, policy behavior, budgets, and private visibility.
+
 ## 1.0.0 — 2026-10-31
 
 - Assemble the existing 41-condition full-orbital record without new molecular experiments.

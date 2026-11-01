@@ -10,3 +10,4 @@ reproduced/
 execution/
 .cache/
 *.egg-info/
+ci-results/

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="292" viewBox="0 0 960 292" role="img" aria-labelledby="title description">
+<title id="title">One saved LiH comparison at 1.50 angstrom</title>
+<desc id="description">CNOT count is separated into raw decomposition, common simplification, and additional search. All bars refer to one identified comparison pair.</desc>
+<rect width="960" height="292" fill="#FFFFFF"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#111111">
+<text x="28" y="31" font-size="20" font-weight="700">LiH 1.50 Å · source step 6 · comparator step 5</text>
+<text x="28" y="59" font-size="15">CNOT count under the recorded logical decomposition</text>
+<text x="28" y="109" font-size="16">Raw CEO comparator</text>
+<rect x="306" y="85" width="492.8" height="36" rx="5" fill="#F1F6FC" stroke="#111111" stroke-width="1.2"/>
+<text x="810.8" y="109" font-size="18" font-weight="700">112</text>
+<text x="28" y="163" font-size="16">After common simplification</text>
+<rect x="306" y="139" width="440.0" height="36" rx="5" fill="#FFFBEA" stroke="#111111" stroke-width="1.2"/>
+<text x="758.0" y="163" font-size="18" font-weight="700">100</text>
+<text x="28" y="217" font-size="16">Compressed circuit</text>
+<rect x="306" y="193" width="286.0" height="36" rx="5" fill="#F2F9F2" stroke="#111111" stroke-width="1.2"/>
+<text x="604.0" y="217" font-size="18" font-weight="700">65</text>
+<text x="28" y="260" font-size="15">Energy change: -0.07070 mHa · common/output CNOT depth: 31/31</text>
+</g>
+</svg>
