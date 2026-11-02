@@ -7,7 +7,21 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from build_readme_assets import build, generated_files
-from check_repository import check, check_markdown, check_svg, headings
+from check_repository import check, check_markdown, check_svg, distribution_errors, headings
+
+
+@pytest.mark.parametrize("name", ["AGENTS.md", "docs/AGENT.md", "CLAUDE.md",
+                                 ".codex/settings.toml", "tools/.agents/rules.md",
+                                 ".claude/config.json", ".idea/project.xml",
+                                 ".vscode/settings.json"])
+def test_local_assistant_and_editor_configuration_is_excluded(name):
+    assert distribution_errors([name])
+
+
+def test_research_and_reproducibility_files_are_distributable():
+    assert not distribution_errors(["docs/PROTOCOL.md", "tools/run_policy.py",
+                                    "data/metadata/policy-files.json",
+                                    ".github/workflows/verify.yml"])
 
 
 def test_repository_checks_without_running_molecular_code():

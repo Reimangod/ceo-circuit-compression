@@ -58,7 +58,7 @@ def generated_files(root=ROOT):
               "[recorded selection](../data/metadata/report-selection.json). Candidate IDs,",
               "full-precision values, common-simplified resources, and evidence paths remain",
               "in that metadata. The repository checks detect stale generated views.", "",
-              "[Study overview](OVERVIEW.md) · [Data dictionary](DATA_DICTIONARY.md) ·",
+              "[Method](PROTOCOL.md) · [Data dictionary](DATA_DICTIONARY.md) ·",
               "[Reconstruct and verify the raw records](QUICKSTART.md)", ""]
 
     example = next(r for r in rows if r["molecule"] == "LiH" and r["distance_A"] == 1.5)

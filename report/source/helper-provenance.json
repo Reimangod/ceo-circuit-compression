@@ -1,9 +1,0 @@
-{
-  "source_file": "outputs/ceo-compression-detailed-explanation-2026-10-30/build_document.py",
-  "source_sha256": "ff50159afeb7d29d105e4e11505edba0b567d48a109af3ba54577482e3262686",
-  "extracted_definitions": [
-    "mr",
-    "MathParser"
-  ],
-  "old_data_or_compressor_code_executed": false
-}

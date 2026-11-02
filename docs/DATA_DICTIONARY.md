@@ -1,5 +1,22 @@
 # Data dictionary
 
+## Collections
+
+| Molecule | Current-policy conditions | Historical conditions | Historical basis |
+| --- | ---: | ---: | --- |
+| LiH | 8 | 12 | STO-3G |
+| HF | 2 | 2 | STO-3G |
+| BeH₂ | 8 | 12 | STO-3G |
+| N₂ | 4 | 4 | STO-3G |
+| H₄ | — | 2 | STO-3G |
+| H₆ | — | 7 | STO-3G |
+| H₈ | — | 2 | 6-31G |
+
+The 41 historical conditions include the 22 current conditions. Each current
+condition has three registered starting circuits, giving 66 tasks. Historical
+methods, budgets, starts, and verification coverage differ; the collections are
+not pooled as a single benchmark. All current conditions use full-orbital STO-3G.
+
 ## Storage and identities
 
 `data/metadata/archive-manifest.json` maps the original workspace-relative
@@ -51,6 +68,12 @@ under the recorded decomposition/simplification convention. Reduction percent is
 and child resources are distinct. These are not hardware-routed resource counts.
 
 ## Costs, outcomes and missingness
+
+Recorded current search cost is 117,745 W. Qualification (77 W) and post-search
+validation (24 W) are separate entries in
+[cost-breakdown.json](../data/metadata/cost-breakdown.json). Original CEO generation
+cost is separate and is not fully known for every source. W measures modeled
+evaluation effort, not shots or the CEO paper's grouped Measurement Cost.
 
 The current event ledger charges at STARTED: `delta_W = 1 + 2*p` for an energy
 evaluation with `p` requested scalar gradient components. A terminal record and

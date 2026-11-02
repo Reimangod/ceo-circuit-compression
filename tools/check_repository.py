@@ -4,7 +4,7 @@ import ast
 from collections import Counter
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import subprocess
 from urllib.parse import unquote, urlsplit
@@ -13,6 +13,17 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 CJK = re.compile(r"[\u3040-\u30ff\u3400-\u9fff]")
 LINK = re.compile(r"!?\[[^\]]*\]\(([^\s)]+)(?:\s+\"[^\"]*\")?\)")
+LOCAL_GUIDANCE = {"AGENTS.MD", "AGENT.MD", "CLAUDE.MD"}
+LOCAL_FOLDERS = {".codex", ".agents", ".claude", ".idea", ".vscode"}
+
+
+def distribution_errors(names):
+    errors = []
+    for name in names:
+        path = PurePosixPath(name)
+        if path.name.upper() in LOCAL_GUIDANCE or any(part.lower() in LOCAL_FOLDERS for part in path.parts):
+            errors.append(f"Local assistant/editor configuration is not distributed: {name}")
+    return errors
 
 
 def markdown_paths(root):
@@ -111,6 +122,7 @@ def check(root=ROOT):
     for name in tracked:
         if not name or not (root / name).is_file():
             continue
+        errors.extend(distribution_errors([name]))
         if (root / name).stat().st_size > 20 * 1024 * 1024:
             errors.append(f"Large Git payload; use a separate data asset: {name}")
         if name.startswith(("data/raw/", ".venv/", "ci-results/", "execution/")):
