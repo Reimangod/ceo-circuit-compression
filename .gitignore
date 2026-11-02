@@ -11,3 +11,12 @@ execution/
 .cache/
 *.egg-info/
 ci-results/
+# Local assistant/editor instructions are not part of the research distribution.
+AGENTS.md
+AGENT.md
+CLAUDE.md
+.codex/
+.agents/
+.claude/
+.idea/
+.vscode/

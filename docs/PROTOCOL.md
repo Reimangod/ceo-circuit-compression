@@ -34,9 +34,8 @@ simplifier, resource-aware initial order, and single candidate queue.
   topology. It is reset when its coefficient-point correspondence is lost.
 - Initial-energy-qualified candidates can be certified without BFGS refinement.
 
-The common maximum circuit size is 96 blocks. The preceding implementation used
-64; this application extends that size bound without using historical solutions
-to choose deletion positions.
+The maximum circuit size is 96 blocks. Historical solutions are excluded from
+candidate construction and deletion-position selection.
 
 ## Common budget rule
 
@@ -95,9 +94,13 @@ resources. Qualification checks compare states, energies, and gradients on small
 fixtures. Additional final source-point statevector checks are distinguished from
 the compression search and its classical runtime.
 
-Changing the numerical backend and supported size does not promise bit-identical
-search trajectories relative to the preceding version. Numerical ties in gradients
-or rankings and wall-time termination can change the executed path.
+The 17 policy modules, exact-sector kernel, and bootstrap retain their recorded
+bytes. [policy-files.json](../data/metadata/policy-files.json) identifies all
+19 files. The launcher rebinds runtime and output paths while preserving source
+digests, task settings, and the embedded operator-template registry.
+
+Numerical ties in gradients or rankings and wall-time termination can change the
+executed path across machines. Bit-identical search trajectories are not promised.
 
 ## Execution limits and preserved outcomes
 

@@ -2,76 +2,64 @@
 
 [![Research artifact CI](https://github.com/Reimangod/ceo-circuit-compression/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Reimangod/ceo-circuit-compression/actions/workflows/verify.yml)
 
-**Smaller circuits from saved CEO-ADAPT-VQE checkpoints, with verifiable energy,
-resource, and search-cost records.**
+Code and data for reducing the size of saved **CEO-ADAPT-VQE** circuits.
+CEO-ADAPT-VQE builds a quantum state-preparation circuit by adding coupled
+exchange operators. This method compresses its saved checkpoints through
+block removal and parameter constraints, with optional coefficient reoptimization.
+Every reported pair includes its energy, logical resources, and search cost.
 
-This repository contains a bounded, source-only compression policy and the data
-needed to inspect its recorded results. The policy constructs smaller circuits,
-refines their coefficients when needed, and independently checks each reported
-comparison. It uses uncompressed CEO checkpoints rather than learned models or
-previously successful compression recipes.
+**[Results](docs/RESULTS.md)** · **[Quick start](docs/QUICKSTART.md)** ·
+**[Method](docs/PROTOCOL.md)** · **[Data format](docs/DATA_DICTIONARY.md)**
 
-**Access:** private · **Data release:** [artifact-v1.0.0](https://github.com/Reimangod/ceo-circuit-compression/releases/tag/artifact-v1.0.0)
-· **Python:** 3.11–3.12 · **Code:** [Apache-2.0](LICENSE) · **Data:** [CC BY 4.0](LICENSE-DATA)
+## Method
 
-## Start here
+![Saved CEO checkpoints pass through candidate construction, bounded screening and refinement, independent validation, and recorded outputs.](docs/assets/compression-workflow.svg)
 
-| Your goal | Guide |
-| --- | --- |
-| Understand the method and comparison | [Study overview](docs/OVERVIEW.md) · [Policy specification](docs/PROTOCOL.md) |
-| Inspect the recorded numerical results | [Current-policy results](docs/RESULTS.md) · [Data dictionary](docs/DATA_DICTIONARY.md) |
-| Download, verify, and reconstruct the data | [Quick start](docs/QUICKSTART.md) · [Reproducibility](docs/REPRODUCIBILITY.md) |
-| Inspect the tests or contribute a change | [CI coverage](docs/CI.md) · [Contributing](CONTRIBUTING.md) |
-
-## How compression works
-
-![Compression workflow: uncompressed CEO checkpoints, candidate construction, bounded screening and optimization, independent validation, and saved outputs. Remaining budget returns control to the candidate queue.](docs/assets/compression-workflow.svg)
-
-Candidate structures come from ordered block subsequences and registered
-multi-parameter-to-one-parameter constraints. The same reference-input
-simplification is applied to the CEO comparator and the candidate. Energy
-screening and short BFGS allocations share a fixed, circuit-size-dependent budget.
-A candidate that already meets the energy condition can be saved without
-coefficient reoptimization.
-
-For a verified compression pair, the recorded acceptance conditions are:
+The search uses uncompressed CEO checkpoints, without learned models or previous
+compression solutions. The same reference-input simplification is applied to
+the candidate and its CEO comparator. A verified compression pair satisfies:
 
 ```text
-E_compressed <= E_saved_CEO + 1e-9 Ha
+E_compressed <= E_CEO + 1e-9 Ha
 CNOT_compressed < CNOT_common_simplified_CEO
 CNOT_depth_compressed <= CNOT_depth_common_simplified_CEO
 ```
 
-The saved comparator can be earlier than the checkpoint used to construct the
-candidate. Every result therefore records both starting and comparison steps.
-All four resource values in a row belong to the same pair of actual circuits.
+The comparison checkpoint can be earlier than the search's starting checkpoint.
+Both are identified in each result. Total reduction from the raw CEO decomposition
+and additional reduction after common simplification have different denominators.
 
-## What the archive contains
+## Results and data
 
-| Collection | Molecular conditions | Starting circuits | Meaning |
-| --- | ---: | ---: | --- |
-| Current policy | **22** across LiH, HF, BeH₂, and N₂ | **66** | One registered policy and a common budget rule |
-| Historical full-orbital archive | **41** across seven molecules | Multiple recorded studies | Includes the 22 current conditions; methods and budgets differ |
+| Collection | Scope | Role |
+| --- | --- | --- |
+| Current policy | 22 conditions, 66 starting circuits; LiH, HF, BeH₂, N₂ | One policy with a common budget rule |
+| Historical archive | 41 full-orbital conditions across seven molecules | Includes the current conditions; methods and budgets differ |
 
-Here, a condition is a molecule, geometry, basis, and full-orbital physical
-problem. The historical collection also includes H₄, H₆, and H₈. It is a
-provenance archive, not an expansion of the current-policy benchmark.
+The historical collection also contains H₄, H₆, and H₈. Full-orbital means that
+all orbitals in the specified basis are retained, with no frozen-core exclusion.
+Exact geometries and basis sets are listed in
+[conditions.csv](data/tables/conditions.csv).
 
-### One recorded comparison
+![One saved LiH pair: 112 raw CEO CNOTs, 100 after common simplification, and 65 after compression.](docs/assets/lih-example.svg)
 
-![LiH at 1.50 angstrom: 112 CNOTs in the raw CEO comparator, 100 after the common simplification, and 65 in the compressed circuit. The comparison uses CEO step 5; the search starts from step 6.](docs/assets/lih-example.svg)
+For this LiH 1.50 Å pair, the energy change is **−0.07070 mHa**. CNOT reduction
+is **42.0%** from the raw comparator and **35.0%** after common simplification;
+the common-simplified and compressed CNOT depths are both 31.
+[All 22 selected comparisons](docs/RESULTS.md) are descriptive saved results,
+not guarantees for every input.
 
-This pair has a compressed-minus-comparator energy difference of
-**−0.07070 mHa**. The total CNOT reduction is **42.0%** relative to the raw
-decomposition; the additional reduction is **35.0%** relative to the
-common-simplified comparator. The compressed CNOT depth equals the
-common-simplified depth of 31. This is one recorded pair, not a guarantee for
-every starting circuit. [View all 22 current comparisons](docs/RESULTS.md).
+Resources are logical, under the recorded decomposition. The cost model
+`W = N_energy + 2 * N_scalar_gradient_components` is separate from physical shots
+and the CEO paper's grouped Measurement Cost. These data alone do not establish
+matched-work superiority over continued CEO growth, hardware advantage, or
+generalization to unseen molecules. Source convergence and comparator energy
+non-worsening are separate properties.
 
-## Quick verification
+## Reproduce the saved results
 
-With Python 3.11 or 3.12 and an authenticated
-[GitHub CLI](https://cli.github.com/):
+Use Python 3.11 or 3.12 and the [GitHub CLI](https://cli.github.com/).
+Authentication is required while the repository is private.
 
 ```bash
 gh repo clone Reimangod/ceo-circuit-compression
@@ -83,77 +71,55 @@ python3 tools/reconstruct_census.py
 python3 tools/reproduce.py --tables-only
 ```
 
-The first check needs only the checkout. The following commands retrieve the
-checksum-verified release data, reconcile recorded costs and comparisons, and
-export tables. **They run no molecular search, coefficient optimization, or FCI.**
-Allow about 1.8 GiB for the expanded data, plus temporary download space.
-See the [quick start](docs/QUICKSTART.md) for offline assets, locked environments,
-tests, figure reconstruction, and expected outputs.
+These commands verify and reconstruct saved records; they launch no molecular
+search, optimization, or FCI calculation. The fixed
+[data release](https://github.com/Reimangod/ceo-circuit-compression/releases/tag/artifact-v1.0.0)
+requires about 1.8 GiB when expanded, plus temporary download space.
+The [quick start](docs/QUICKSTART.md) covers locked dependencies, figure
+reproduction, tests, and the separate macOS compression command.
 
-## Scope of the evidence
-
-- Resource counts are **logical**, under the recorded decomposition convention.
-  Raw decomposition, common simplification, and additional search are separated.
-- `W = N_energy + 2 * N_scalar_gradient_components` is an **evaluation-cost
-  model**, not physical shots or the CEO paper's grouped Measurement Cost.
-- The archive checks energy non-worsening against its identified comparator.
-  Source convergence, final stationarity, and absolute ground-state accuracy
-  remain separate attributes.
-- These records establish saved circuit comparisons. Matched-work superiority
-  over continued CEO growth, hardware advantage, and transfer to unseen molecules
-  require separate evidence.
-
-The [study overview](docs/OVERVIEW.md) explains missing records, historical
-certification limits, and the supported molecular conditions.
-
-## Run a new compression task
-
-New execution is a separate, explicit operation. The current launcher is
-qualified for **macOS `sandbox-exec`**; Linux CI checks synthetic numerical
-fixtures and archive reconstruction, not a production Linux compression run.
-
-```bash
-uv sync --frozen --extra policy
-uv run --frozen python tools/run_policy.py \
-  --task-id lih-1.20A-all-orbitals-root006 \
-  --output execution/new-attempt
-```
-
-Read the [execution guide](docs/REPRODUCIBILITY.md#explicit-policy-execution)
-first. The launcher preserves the registered policy and budget, isolates the
-worker from historical compression results and the network, and requires a new
-output directory. Verification and CI never launch this command.
-
-## Repository map
+## Contents
 
 ```text
-policy/frozen/       Unchanged compressor and exact-sector kernel
-third_party/         Pinned upstream CEO implementation and notices
-data/metadata/       Identities, checksums, selections, and cost definitions
-data/tables/         Lightweight recorded tables
-data/raw/            Release data objects; downloaded separately, never in Git
-tools/               Verification, reconstruction, and explicit execution tools
-docs/                English guides and repository overview figures
-report/              Preserved source-language report and figure artifacts
-tests/               Archive, numerical-fixture, and repository-quality tests
+policy/frozen/    Recorded compressor and exact-sector kernel
+third_party/     Pinned upstream CEO implementation and license
+data/            Conditions, results, provenance, and release-data manifest
+docs/            Usage, method, results, data dictionary, and overview figures
+report/          Original research report and figures
+tools/           Data retrieval, verification, reconstruction, and execution
+tests/           Saved-data checks and synthetic numerical tests
 ```
 
-The maintained guides and overview figures are in English. Historical field
-labels, the original Japanese Word report, its figures, and frozen source files
-retain their original content for traceability.
+The guides and overview figures are in English. Original report artifacts and
+historical data retain their source language and recorded values. Research
+provenance is preserved separately from the presentation.
 
-## Citation and licensing
+## Tests and support
 
-Use [CITATION.cff](CITATION.cff) to cite the code and data version. The current
-private release has no DOI. Original code is covered by [Apache-2.0](LICENSE);
-original data and documentation use [CC BY 4.0](LICENSE-DATA). Third-party terms
-and attribution are retained in [NOTICE](NOTICE).
+```bash
+uv sync --frozen --extra policy --extra report --extra test
+uv run --frozen python -m pytest -q
+```
 
-The CEO method is described in the published paper:
+CI checks documentation, locked Python 3.11/3.12 numerical tests, macOS worker
+isolation, and fixed-release data on trusted branches. Three raw-data tests are
+skipped when the release data are absent; the data-audit job runs them after
+download. CI never launches molecular experiments.
+
+For an issue, include the commit, operating system, Python version, command,
+and sanitized error. Keep credentials and private correspondence out of issues.
+Code and data changes should retain original identities, uncertainty, and
+comparison definitions.
+
+## Citation and license
+
+Cite the code and data through [CITATION.cff](CITATION.cff), and cite the CEO paper:
 
 Ramôa, M. et al. *Reducing the resources required by ADAPT-VQE using coupled
 exchange operators and improved subroutines*. **npj Quantum Information 11**,
 86 (2025). [DOI: 10.1038/s41534-025-01039-4](https://doi.org/10.1038/s41534-025-01039-4).
 
-The [upstream implementation](https://github.com/mafaldaramoa/ceo-adapt-vqe) is
-pinned to `a3f89d03e6a03c89767d3cf8ee7657a57653dda0`.
+Original code: [Apache-2.0](LICENSE). Original data and documentation:
+[CC BY 4.0](LICENSE-DATA). Third-party attribution is retained in [NOTICE](NOTICE).
+The upstream implementation is pinned to
+`a3f89d03e6a03c89767d3cf8ee7657a57653dda0`.
